@@ -12,17 +12,15 @@
 #  set java.security in JDK ( jre/lib/security )
 #  set -Djava.security.egd=file:/dev/./urandom param
 #
-define jdk7::install7(
-  $version         =  '7u25',
-  $fullVersion     =  'jdk1.7.0_25',
-  $x64             =  true,
-  $downloadDir     =  '/install',
-  $urandomJavaFix  =  true,
-  $sourcePath      = "puppet:///modules/${::module_path}/",
+define jdk7::install7 (
+  $version              = '7u25',
+  $fullVersion          = 'jdk1.7.0_25',
+  $x64                  = true,
+  $alternativesPriority = 17065,
+  $downloadDir          = '/install',
+  $urandomJavaFix       = true,
+  $sourcePath           = "puppet:///modules/${module_name}/",
 ) {
-
-  # notify's create reports that indicate a change event, useful for debugging, but not good in production code
-  # notify {"install7.pp ${title} ${version}":}
 
   if $x64 == true {
     $type = 'x64'
@@ -31,54 +29,69 @@ define jdk7::install7(
   }
 
   case $::kernel {
-    Linux: {
-      $installVersion   = 'linux'
+    Linux   : {
+      $installVersion = 'linux'
       $installExtension = '.tar.gz'
-      $path             = '/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:'
-      $user             = 'root'
-      $group            = 'root'
+      $path = '/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:'
+      $user = 'root'
+      $group = 'root'
     }
-    default: {
-      fail('Unrecognized operating system')
-      }
+    default : {
+      fail('Unrecognized operating system, please use it on a Linux host')
+    }
   }
 
-  $jdkfile =  "jdk-${version}-${installVersion}-${type}${installExtension}"
+  $jdkfile = "jdk-${version}-${installVersion}-${type}${installExtension}"
 
+  # set the defaults for Exec
+  Exec {
+    path => $path,
+    user => $user,
+  }
+
+  # set the defaults for File
   File {
     replace => false,
     owner   => $user,
     group   => $group,
   }
 
-  file { $downloadDir:
-    ensure => directory,
+  exec { "create ${$downloadDir} directory":
+    command => "mkdir -p ${$downloadDir}",
+    unless  => "test -d ${$downloadDir}",
+  }
+
+  # check install folder
+  if !defined(File[$downloadDir]) {
+    file { $downloadDir:
+      ensure  => directory,
+      require => Exec["create ${$downloadDir} directory"],
+    }
   }
 
   # download jdk to client
-  file {"${downloadDir}/${jdkfile}":
+  file { "${downloadDir}/${jdkfile}":
     ensure  => file,
-    path    => "${downloadDir}/${jdkfile}",
     source  => "${sourcePath}/${jdkfile}",
     require => File[$downloadDir],
   }
+
   # install on client
-  javaexec {"jdkexec ${title} ${version}":
-    path        => $downloadDir,
-    fullVersion => $fullVersion,
-    jdkfile     => $jdkfile,
-    user        => $user,
-    group       => $group,
-    require     => File["${downloadDir}/${jdkfile}"],
+  javaexec { "jdkexec ${title} ${version}":
+    path                 => $downloadDir,
+    fullVersion          => $fullVersion,
+    jdkfile              => $jdkfile,
+    alternativesPriority => $alternativesPriority,
+    user                 => $user,
+    group                => $group,
+    require              => File["${downloadDir}/${jdkfile}"],
   }
 
-  if ( $urandomJavaFix  ==  true ) {
+  if ($urandomJavaFix == true) {
     exec { "set urandom ${fullVersion}":
-    command => "sed -i -e's/securerandom.source=file:\/dev\/urandom/securerandom.source=file:\/dev\/.\/urandom/g' /usr/java/${fullVersion}/jre/lib/security/java.security",
-    unless  => "/bin/grep '^securerandom.source=file:/dev/./urandom' /usr/java/${fullVersion}/jre/lib/security/java.security",
-    require => Javaexec["jdkexec ${title} ${version}"],
-    user    => 'root',
-    path    => $path,
+      command => "sed -i -e's/securerandom.source=file:\/dev\/urandom/securerandom.source=file:\/dev\/.\/urandom/g' /usr/java/${fullVersion}/jre/lib/security/java.security",
+      unless  => "grep '^securerandom.source=file:/dev/./urandom' /usr/java/${fullVersion}/jre/lib/security/java.security",
+      require => Javaexec["jdkexec ${title} ${version}"],
     }
   }
 }

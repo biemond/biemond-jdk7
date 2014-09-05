@@ -1,5 +1,7 @@
 # History
 
+## 0.4.3
+
 ## 0.4.2
 - cleanup code
 - fixes for future parser puppet 3.7

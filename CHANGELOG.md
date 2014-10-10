@@ -1,6 +1,7 @@
 # History
 
 ## 0.4.4
+- another typo in urandomfix
 
 ## 0.4.3
 - typo in urandomfix

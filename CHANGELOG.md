@@ -1,5 +1,7 @@
 # History
 
+## 0.4.5
+
 ## 0.4.4
 - another typo in urandomfix
 

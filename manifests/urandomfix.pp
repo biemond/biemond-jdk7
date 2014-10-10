@@ -44,7 +44,7 @@ class jdk7::urandomfix () {
       exec { 'chkconfig rngd':
         command   => 'chkconfig --add rngd',
         require   => Service['start rngd service'],
-        unless    => "'chkconfig | /bin/grep 'rngd'",
+        unless    => "chkconfig | /bin/grep 'rngd'",
         path      => $path,
         logoutput => true,
         user      => 'root',

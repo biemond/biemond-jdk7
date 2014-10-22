@@ -1,5 +1,8 @@
 # History
 
+## 0.4.6
+- sets javac as default
+
 ## 0.4.5
 
 ## 0.4.4
@@ -44,4 +47,3 @@
 
 ## 0.2.0
 - Puppet 3.0 compatible, creates download folder
-

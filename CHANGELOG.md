@@ -1,9 +1,7 @@
 # History
 
-## 0.4.6
-- sets javac as default
-
 ## 0.4.5
+- sets javac as default
 
 ## 0.4.4
 - another typo in urandomfix

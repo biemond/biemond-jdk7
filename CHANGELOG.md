@@ -1,5 +1,7 @@
 # History
 
+## 0.4.8
+
 ## 0.4.7
 - urandom fix for (rngd.service ) RedHat Family >= 7
 

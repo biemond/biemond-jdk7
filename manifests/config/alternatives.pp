@@ -25,7 +25,7 @@ define jdk7::config::alternatives(
 
   exec { "java alternatives ${title}":
     command   => "${install_command} /usr/bin/${title} ${title} ${java_home_dir}/${full_version}/bin/${title} ${priority}",
-    unless    => "${retrieve_command} ${title} | /bin/grep ${full_version}",
+    unless    => "${retrieve_command} ${title} | /bin/grep ${full_version} | /bin/grep ${priority}",
     path      => '/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin',
     logoutput => true,
     user      => $user,

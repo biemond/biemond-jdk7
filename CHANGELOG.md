@@ -1,5 +1,8 @@
 # History
 
+## 0.4.12
+- Added urandom fixes and use notify when there is rngd configuration refresh
+
 ## 0.4.10
 - urandom fix for JDK 8
 

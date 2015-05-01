@@ -35,7 +35,7 @@ describe 'jdk7::urandomfix' , :type => :class do
           })
       end
       it do
-        should contain_service("rngd service").with({
+        should contain_service("rngd").with({
             'ensure'     => 'running',
             'enable'     => true,
           })
@@ -61,7 +61,7 @@ describe 'jdk7::urandomfix' , :type => :class do
           })
       end
       it do
-        should contain_service("rngd service").with({
+        should contain_service("rngd").with({
             'ensure'     => 'running',
             'enable'     => true,
           })
@@ -87,7 +87,7 @@ describe 'jdk7::urandomfix' , :type => :class do
           })
       end
       it do
-        should contain_service("rngd service").with({
+        should contain_service("rngd").with({
             'ensure'     => 'running',
             'enable'     => true,
           })
@@ -114,7 +114,7 @@ describe 'jdk7::urandomfix' , :type => :class do
           })
       end
       it do
-        should contain_service("rng-tools service").with({
+        should contain_service("rng-tools").with({
             'ensure'     => 'running',
             'enable'     => true,
           })

@@ -34,7 +34,9 @@ example usage
 	    x64                   => true,
 	    download_dir          => "/install",
 	    urandom_java_fix      => false,
-	    source_path           => "puppet:///modules/jdk7/"
+	    source_path           => "puppet:///modules/jdk7/",
+        default_links         => true,
+        install_alternatives  => true,
 	  }
 
 or Java 8 and with rsa keySize Fix

@@ -130,7 +130,7 @@ define jdk7::config::javaexec (
     }
   }
 
-  $alternatives = [ 'java', 'javac', 'keytool']
+  $alternatives = [ 'jar', 'java', 'javac', 'keytool']
   if ( $install_alternatives ){
     jdk7::config::alternatives{ $alternatives:
       java_home_dir => $java_homes_dir,

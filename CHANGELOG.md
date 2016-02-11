@@ -1,7 +1,7 @@
 # History
 
 ## 0.5.3
-- Suse urandom fix
+- Suse urandom fix and support for RHEL 5 family
 - Support for multiple JDK installations
 - add jar to alternatives
 

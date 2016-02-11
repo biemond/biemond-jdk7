@@ -16,9 +16,8 @@ class jdk7::urandomfix () {
 
   $path = '/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:'
 
-  package { 'rng-tools':
-    ensure => present,
-  }
+  # ensure the package is installed if not previously by other puppet definitions
+  realize package['rng-tools']
 
   case $::osfamily {
     'RedHat': {
@@ -72,7 +71,7 @@ class jdk7::urandomfix () {
         }
       }
     }
-    'Debian','Suse' : {
+    'Debian': {
       exec { 'set urandom /etc/default/rng-tools':
         command   => "sed -i -e's/#HRNGDEVICE=\\/dev\\/null/HRNGDEVICE=\\/dev\\/urandom/g' /etc/default/rng-tools",
         unless    => "/bin/grep '^HRNGDEVICE=/dev/urandom' /etc/default/rng-tools",
@@ -82,7 +81,23 @@ class jdk7::urandomfix () {
         user      => 'root',
         notify    => Service['rng-tools'],
       }
-
+      service { 'rng-tools':
+        ensure  => 'running',
+        enable  => true,
+        require => Exec['set urandom /etc/default/rng-tools'],
+      }
+    }
+    'Suse': {
+      exec { 'set urandom /etc/default/rng-tools':
+        command   => "sed -i -e's/#HRNGDEVICE=\\/dev\\/null/HRNGDEVICE=\\/dev\\/urandom/g' /etc/default/rng-tools",
+        unless    => "/bin/grep '^HRNGDEVICE=/dev/urandom' /etc/default/rng-tools",
+        require   => Package['rng-tools'],
+        path      => $path,
+        logoutput => true,
+        user      => 'root',
+        notify    => Service['rng-tools'],
+        onlyif    => "test -f /lib/systemd/system/rngd.service",
+      }
       service { 'rng-tools':
         ensure  => 'running',
         enable  => true,

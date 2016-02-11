@@ -17,7 +17,11 @@ class jdk7::urandomfix () {
   $path = '/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:'
 
   # ensure the package is installed if not previously by other puppet definitions
-  realize package['rng-tools']
+  if !defined(Package['rng-tools']) {
+    package{'rng-tools':
+      ensure => present,
+    }
+  }
 
   case $::osfamily {
     'RedHat': {
@@ -96,7 +100,7 @@ class jdk7::urandomfix () {
         logoutput => true,
         user      => 'root',
         notify    => Service['rng-tools'],
-        onlyif    => "test -f /lib/systemd/system/rngd.service",
+        onlyif    => 'test -f /lib/systemd/system/rngd.service',
       }
       service { 'rng-tools':
         ensure  => 'running',

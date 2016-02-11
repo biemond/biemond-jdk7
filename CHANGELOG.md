@@ -1,5 +1,10 @@
 # History
 
+## 0.5.3
+- Suse urandom fix
+- Support for multiple JDK installations
+- add jar to alternatives
+
 ## 0.5.2
 - update /usr/java/latest link to the latest jdk
 - cryptography extension file fix

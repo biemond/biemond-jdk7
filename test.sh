@@ -3,6 +3,8 @@
 source ~/.profile
 source ~/.rvm/scripts/rvm
 
+
+
 rvm --version
 
 # rvm install ruby-1.8.7

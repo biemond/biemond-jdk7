@@ -132,7 +132,7 @@ define jdk7::config::javaexec (
     }
   }
 
-  $alternatives = [ 'jar', 'java', 'javac', 'keytool']
+  $alternatives = [ 'jar', 'java', 'javac', 'keytool', 'java_sdk' ]
   if ( $install_alternatives ){
     if(!defined(Jdk7::Config::Alternatives['java'])) {
         jdk7::config::alternatives{ $alternatives:

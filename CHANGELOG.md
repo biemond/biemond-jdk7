@@ -1,5 +1,8 @@
 # History
 
+## 0.5.4
+- Added java_sdk alternative
+
 ## 0.5.3
 - Suse urandom fix and support for RHEL 5 family
 - Support for multiple JDK installations

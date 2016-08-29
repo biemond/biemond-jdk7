@@ -21,7 +21,7 @@ define jdk7::config::alternatives(
     }
   }
 
-  if $title == "java_sdk" {
+  if $title == 'java_sdk' {
     exec { "java alternatives ${title}":
       command   => "${alt_command} --install /etc/alternatives/{title} ${title} ${java_home_dir}/${full_version} ${priority}",
       unless    => "${alt_command} --display ${title} | /bin/grep ${full_version} | /bin/grep 'priority ${priority}$'",

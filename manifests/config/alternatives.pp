@@ -37,7 +37,7 @@ define jdk7::config::alternatives(
       unless    => "${alt_command} --display ${title} | grep -v best  | /bin/grep -v priority | /bin/grep ${full_version}",
       path      => '/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin',
       logoutput => true,
-	  loglevel  => verbose,
+      loglevel  => verbose,
       user      => $user,
       group     => $group,
     }

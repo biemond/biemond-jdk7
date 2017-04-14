@@ -1,5 +1,7 @@
 # History
 
+## 1.0.1
+
 ## 1.0.0
 - puppet 4 version of this module
 

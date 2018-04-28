@@ -8,6 +8,8 @@ gem 'simplecov-console'
 
 
 # gem 'puppet-lint'
+gem 'rspec-puppet-utils', :git => 'https://github.com/Accuity/rspec-puppet-utils.git'
+
 
 gem 'semantic_puppet'
 gem 'puppet-lint'

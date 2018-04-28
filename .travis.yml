@@ -22,3 +22,8 @@ env:
   - PUPPET_VERSION=5.0.1 
   - PUPPET_VERSION=5.3.6
   - PUPPET_VERSION=5.5.1  
+
+matrix:
+  exclude:
+  - rvm: 2.2.6
+    env: PUPPET_VERSION=5.5.1

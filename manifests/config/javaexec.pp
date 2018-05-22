@@ -59,7 +59,7 @@ define jdk7::config::javaexec (
     $security_dir = "${java_dir}/jre/lib/security"
     $source_file = "${download_dir}/${cryptography_extension_file}"
     $done_file = "${security_dir}/.jce_installed"
-    $jarfiles = "${security_dir} -mindepth 2 -name '*.jar'"
+    $jarfiles = "${security_dir} -maxdepth 2 -mindepth 2 -name '*.jar'"
     $mv_cmd = "mv '{}' ${security_dir} ';'"
     if ( $cryptography_extension_file =~ /\.zip$/ ) {
       $extract_cmd = 'unzip'

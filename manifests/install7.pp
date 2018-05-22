@@ -20,6 +20,7 @@ define jdk7::install7 (
   Integer $alternatives_priority                = 17065,
   String $download_dir                          = lookup('jdk7::download_dir'),
   Optional[String] $cryptography_extension_file = undef,
+  Optional[String] $crypto_policy               = undef,
   Boolean $urandom_java_fix                     = true,
   Boolean $rsa_key_size_fix                     = false,  # set true for weblogic 12.1.1 and jdk 1.7 > version 40
   String $source_path                           = lookup('jdk7::module_mountpoint'),
@@ -119,6 +120,17 @@ define jdk7::install7 (
       cwd     => lookup('jdk7::tmp_dir'),
     }
   }
+  if ($crypto_policy != undef and regsubst($version, 'u\d+', '') == '8' and Numeric(regsubst($version, '^\du', '')) >= 151) {
+    file_line { 'crypto.policy configuration':
+      path    => "${java_homes}/${full_version}/jre/lib/security/java.security",
+      line    => "crypto.policy=${$crypto_policy}",
+      match   => '^crypto.policy=.*$',
+      require => Jdk7::Config::Javaexec["jdkexec ${title} ${version}"],
+    }
+  } else {
+    notice("crypto.policy configuration not available for ${full_version}")
+  }
+
   if ($rsa_key_size_fix == true) {
     exec { "sleep 3 sec for urandomJavaFix ${full_version}":
       command => '/bin/sleep 3',
